@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partidos en Directo</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;  /* Fondo claro para mejorar la legibilidad */
+            color: #333;  /* Color de texto más oscuro para contraste */
+            text-align: center;
+        }
+        .header {
+            background-color: #2c3e50;  /* Fondo oscuro */
+            padding: 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+        .header img {
+            width: 100px;
+            height: auto;
+            border-radius: 10px;
+        }
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 25px;
+            font-size: 16px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: #5bc0be;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            background-color: #34495e;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .menu button {
+            background: #5bc0be;
+            color: #0b132b;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .menu button:hover {
+            background-color: #ffcc00;
+            transform: scale(1.05);
+        }
+        .content {
+            padding: 60px 20px; /* Aumentamos el padding superior e inferior */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 80vh; /* Esto asegura que la sección ocupe al menos el 80% de la altura de la ventana */
+            min-width: 80vh; /* Esto asegura que la sección ocupe al menos el 80% de la altura de la ventana */
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        #wg-api-football-games {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .nav a {
+            text-decoration: none; /* Elimina el subrayado de los enlaces */
+            color: inherit; /* Hereda el color del texto */
+        }
+
+        .nav span {
+            font-size: 16px;
+        }
+
+        .nav a:hover span {
+            color: #5bc0be;
+        }
+        /* Estilos para el Footer */
+        footer {
+            background-color: #34495e;
+            color: white;
+            padding: 60px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 40px;
+        }
+        footer .footer-content {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 20px;
+        }
+        footer h3 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        footer .footer-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        footer .footer-links a:hover {
+            color: #5bc0be;
+        }
+
+        /* Estilo del formulario de correo */
+        footer .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px; /* Limitar el tamaño máximo del formulario */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        footer .form-container input[type="email"] {
+            width: 100%; /* Asegurar que el campo de correo ocupe todo el ancho disponible */
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        footer .form-container button {
+            width: 50%; /* Hacer el botón más pequeño, al 50% del ancho del formulario */
+            padding: 12px;
+            background-color: #5bc0be;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px; /* Reducir el tamaño del texto del botón */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: auto; /* Asegura que el botón se alinee al centro */
+            margin-right: auto;
+        }
+        footer .form-container button:hover {
+            background-color: #47a29e;
+        }
+        footer .thank-you-message {
+            display: none;
+            background-color: transparent;
+            color: #5bc0be;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .nav {
+                flex-direction: column;
+                gap: 10px;
+                margin-top: 10px;
+            }
+            .menu {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+    <script>
+        document.getElementById("emailForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Evita que el formulario se envíe de la manera tradicional
+    
+            const email = document.getElementById("email").value;
+            
+            // Enviar el correo al servidor
+            fetch("/subscribe", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(email)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Mostrar el mensaje de éxito
+                var thankYouMessage = document.getElementById("thankYouMessage");
+                thankYouMessage.style.display = "block";
+    
+                // Después de 5 segundos, ocultar el mensaje y dejar la página visible
+                setTimeout(function() {
+                    thankYouMessage.style.display = "none";
+                }, 5000);
+            })
+            .catch(error => console.error('Error al enviar el correo:', error));
+        });
+        
+    </script>
+</head>
+<body>
+    <div class="header">
+        <a href="home.html"><img src="img/download-removebg-preview (1).png" alt="GoalRadar Logo"></a>
+        <div class="nav">
+            <a href="estadisticas.html"><span>Estadísticas</span></a>
+            <a href="PartidosDirectos.html"><span>En Directo</span></a>
+            <a href="nosotros.html"><span>Nosotros</span></a>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Partidos en Directo</h2>
+
+        <div id="wg-api-football-games"
+            data-host="v3.football.api-sports.io"
+            data-key="28b64b998fed624421a4506ac1538937"
+            data-date=""
+            data-league=""
+            data-season=""
+            data-theme=""
+            data-refresh="15"
+            data-show-toolbar="true"
+            data-show-errors="false"
+            data-show-logos="true"
+            data-modal-game="true"
+            data-modal-standings="true"
+            data-modal-show-logos="true">
+        </div>
+    </div>
+
+    <script
+        type="module"
+        src="https://widgets.api-sports.io/2.0.3/widgets.js">
+    </script>
+
+<footer>
+    <div class="footer-content">
+        <h3>Suscríbete para recibir novedades</h3>
+        
+        <!-- Formulario de Suscripción -->
+        <div class="form-container">
+            <form id="emailForm">
+                <input type="email" id="email" placeholder="Ingresa tu correo" required>
+                <button type="submit">Suscribirme</button>
+            </form>
+
+            <!-- Mensaje de Gracias -->
+            <div id="thankYouMessage" class="thank-you-message">
+                ¡Gracias por suscribirte!
+            </div>
+        </div>
+
+        <!-- Enlaces de Footer -->
+        <div class="footer-links">
+            <a href="#">Términos y condiciones</a>
+            <a href="#">Política de privacidad</a>
+            <a href="#">Contacto</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
+
